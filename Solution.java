@@ -1,26 +1,33 @@
-import java.util.HashMap;
-import java.util.Map;
-
 class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        // Sayıları ve indekslerini hızlıca hatırlamak için bir hafıza (Map) kuruyoruz
-        Map<Integer, Integer> hafiza = new HashMap<>();
+    public boolean isPalindrome(String s) {
+        // İki işaretçimizi cümlenin iki ucuna yerleştiriyoruz
+        int sol = 0;
+        int sag = s.length() - 1;
         
-        // Dizideki her bir sayıyı sırayla geziyoruz
-        for (int i = 0; i < nums.length; i++) {
-            int suankiSayi = nums[i];
-            int gerekenSayi = target - suankiSayi;
+        while (sol < sag) {
+            char solKarakter = s.charAt(sol);
+            char sagKarakter = s.charAt(sag);
             
-            // Eğer aradığımız sayı hafızada varsa, indeksleri hemen döndür
-            if (hafiza.containsKey(gerekenSayi)) {
-                return new int[] { hafiza.get(gerekenSayi), i };
+            // Sol işaretçi harf veya sayı değilse, es geç ve sağa kaydır
+            if (!Character.isLetterOrDigit(solKarakter)) {
+                sol++;
+            } 
+            // Sağ işaretçi harf veya sayı değilse, es geç ve sola kaydır
+            else if (!Character.isLetterOrDigit(sagKarakter)) {
+                sag--;
+            } 
+            // İkisi de geçerli karakterse, küçük harfe çevirip karşılaştır
+            else {
+                if (Character.toLowerCase(solKarakter) != Character.toLowerCase(sagKarakter)) {
+                    return false; // En ufak bir uyumsuzlukta elendi!
+                }
+                // Karakterler aynıysa işaretçileri içeri doğru yürüt
+                sol++;
+                sag--;
             }
-            
-            // Yoksa, bu sayıyı ve indeksini hafızaya kaydet ki sonrakiler ararsa bulsun
-            hafiza.put(suankiSayi, i);
         }
         
-        // Java'nın derleme hatası vermemesi için zorunlu boş dönüş hattı
-        return new int[] {};
+        // Eğer döngü başarıyla bittiyse metnimiz palindromdur
+        return true;
     }
 }
